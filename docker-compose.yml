@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mysqldb:
+    image: mysql:latest
+    restart: always
+    volumes:
+#      - /data:/var/lib/mysql
+      - /Users/tatanaburmatova/Desktop/ПРОГРАМИРОВАНИЕ/НЕТОЛОГИЯ/IDEA/Task8.1_SGL/src/test/resources/schema.sql
+      - /docker-entrypoint-initdb.d
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=app-deadline
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
