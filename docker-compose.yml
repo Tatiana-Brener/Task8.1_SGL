@@ -1,12 +1,10 @@
 version: '3'
 services:
   mysqldb:
-    image: mysql:latest
+    image: mysql:8
     restart: always
     volumes:
-#      - /data:/var/lib/mysql
-      - /Users/tatanaburmatova/Desktop/ПРОГРАМИРОВАНИЕ/НЕТОЛОГИЯ/IDEA/Task8.1_SGL/src/test/resources/schema.sql
-      - /docker-entrypoint-initdb.d
+      - ./Schema:/docker-entrypoint-initdb.d
     ports:
       - '3306:3306'
     environment:
