@@ -20,6 +20,7 @@ public class DataHelper {
     }
 
     public static AuthInfo getAuthInfo() {
+
         return new AuthInfo("vasya", "qwerty123");
     }
 
@@ -29,7 +30,8 @@ public class DataHelper {
     }
     public static VerificationCode getVerificationCode(AuthInfo authInfo) throws SQLException {
         QueryRunner runner = new QueryRunner();
-        val codeSQL = "SELECT code FROM auth_codes;";
+        String codeSQL = "SELECT code FROM auth_codes WHERE created BETWEEN CURRENT_TIMESTAMP and DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 MINUTE);";
+//        String codeSQL = "SELECT code FROM auth_codes WHERE created=DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 MINUTE);";
 //        val codeSQL = "SELECT code FROM auth_codes WHERE max(auth_codes.created);";
 //        String codeSQL = "SELECT code FROM auth_codes WHERE created=LAST_DAY(created)";
 //        String codeSQL = "SELECT code FROM auth_codes WHERE max(auth_codes.created) and user_id in(SELECT id FROM users WHERE login='vasya');";
@@ -39,8 +41,10 @@ public class DataHelper {
                         "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
                 )
         ) {
-             runner.query(connection, codeSQL, new ScalarHandler<>());
+             runner.query(connection, codeSQL, new ScalarHandler<>("code"));
+
              }
+        val code = codeSQL.getString("code");
         return new VerificationCode(codeSQL);
              }
 

@@ -23,21 +23,19 @@ public class LoginUserTest {
         open("http://localhost:9999");
     }
 
-    @AfterEach
-    void cleanUp() throws SQLException {
-        QueryRunner runner = new QueryRunner();
-        String cleanCardsTable = "DELETE FROM cards;";
-        String cleanAuth_CodesTable = "DELETE FROM auth_codes;";
-//        String cleanUsersTable = "DELETE FROM users;";
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
-        );
-        ) {
-            runner.update(connection, cleanCardsTable);
-            runner.update(connection, cleanAuth_CodesTable);
-//            runner.update(connection, cleanUsersTable);
-        }
-    }
+//    @AfterEach
+//    void cleanUp() throws SQLException {
+//        QueryRunner runner = new QueryRunner();
+//        String cleanCardsTable = "DELETE FROM cards;";
+//        String cleanAuth_CodesTable = "DELETE FROM auth_codes;";
+//        try (Connection connection = DriverManager.getConnection(
+//                "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
+//        );
+//        ) {
+//            runner.update(connection, cleanCardsTable);
+//            runner.update(connection, cleanAuth_CodesTable);
+//        }
+//    }
 
     @Test
     void shouldLogin() throws SQLException {
