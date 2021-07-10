@@ -6,7 +6,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -20,8 +19,17 @@ public class DataHelper {
     }
 
     public static AuthInfo getAuthInfo() {
-
         return new AuthInfo("vasya", "qwerty123");
+    }
+
+    @Value
+    public static class IncorrectAuthInfo {
+        private String login;
+        private String incorrectPassword;
+    }
+    public static IncorrectAuthInfo getInvalidAuthInfo() {
+
+        return new IncorrectAuthInfo("vasya", "jhf4hj4n");
     }
 
     @Value
@@ -30,22 +38,16 @@ public class DataHelper {
     }
     public static VerificationCode getVerificationCode(AuthInfo authInfo) throws SQLException {
         QueryRunner runner = new QueryRunner();
-        String codeSQL = "SELECT code FROM auth_codes WHERE created BETWEEN CURRENT_TIMESTAMP and DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 MINUTE);";
-//        String codeSQL = "SELECT code FROM auth_codes WHERE created=DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 MINUTE);";
-//        val codeSQL = "SELECT code FROM auth_codes WHERE max(auth_codes.created);";
-//        String codeSQL = "SELECT code FROM auth_codes WHERE created=LAST_DAY(created)";
-//        String codeSQL = "SELECT code FROM auth_codes WHERE max(auth_codes.created) and user_id in(SELECT id FROM users WHERE login='vasya');";
-
+        String codeSQL = "SELECT code FROM auth_codes WHERE created=(SELECT MAX(created) FROM auth_codes);";
+        String code;
         try (
-                Connection connection = DriverManager.getConnection (
+                Connection connection = DriverManager.getConnection(
                         "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
                 )
         ) {
-             runner.query(connection, codeSQL, new ScalarHandler<>("code"));
-
-             }
-        val code = codeSQL.getString("code");
-        return new VerificationCode(codeSQL);
-             }
+            code = runner.query(connection, codeSQL, new ScalarHandler<>("code"));
+        }
+        return new VerificationCode(code);
+    }
 
 }
