@@ -1,7 +1,5 @@
 package ru.netology.tets;
 
-import com.github.javafaker.Faker;
-import lombok.val;
 import org.apache.commons.dbutils.QueryRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,19 +21,21 @@ public class LoginUserTest {
         open("http://localhost:9999");
     }
 
-//    @AfterEach
-//    void cleanUp() throws SQLException {
-//        QueryRunner runner = new QueryRunner();
-//        String cleanCardsTable = "DELETE FROM cards;";
-//        String cleanAuth_CodesTable = "DELETE FROM auth_codes;";
-//        try (Connection connection = DriverManager.getConnection(
-//                "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
-//        );
-//        ) {
-//            runner.update(connection, cleanCardsTable);
-//            runner.update(connection, cleanAuth_CodesTable);
-//        }
-//    }
+    @AfterEach
+    void cleanUp() throws SQLException {
+        QueryRunner runner = new QueryRunner();
+        String cleanCardsTable = "DELETE FROM cards;";
+        String cleanAuth_CodesTable = "DELETE FROM auth_codes;";
+        String cleanUsersTable = "DELETE FROM users;";
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
+        );
+        ) {
+            runner.update(connection, cleanCardsTable);
+            runner.update(connection, cleanAuth_CodesTable);
+            runner.update(connection, cleanUsersTable);
+        }
+    }
 
     @Test
     void shouldLogin() throws SQLException {
@@ -45,7 +45,13 @@ public class LoginUserTest {
         var verificationCode = DataHelper.getVerificationCode(authInfo);
         verificationPage.validVerify(verificationCode);
         var personalAccountPage = new PersonalAccountPage();
+    }
 
+    @Test
+    void shouldNotLogin() {
+        var loginPage = new LoginPage();
+        var invalidAuthInfo = DataHelper.getInvalidAuthInfo();
+        loginPage.invalidLogin(invalidAuthInfo);
 
     }
 
