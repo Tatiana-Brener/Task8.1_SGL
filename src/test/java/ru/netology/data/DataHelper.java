@@ -15,7 +15,7 @@ public class DataHelper {
     @Value
     public static class CleaningTables {}
 
-    public static void CleanTables() throws SQLException {
+    public static void cleanTables() throws SQLException {
         QueryRunner runner = new QueryRunner();
         String cleanCardsTable = "DELETE FROM cards;";
         String cleanAuth_CodesTable = "DELETE FROM auth_codes;";
