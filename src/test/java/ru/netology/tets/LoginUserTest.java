@@ -22,7 +22,7 @@ public class LoginUserTest {
 
     @AfterAll
     public void cleanUp() throws SQLException {
-       DataHelper.CleanTables();
+       DataHelper.cleanTables();
     }
 
     @Test
