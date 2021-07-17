@@ -1,6 +1,6 @@
 package ru.netology.tets;
 
-import org.apache.commons.dbutils.QueryRunner;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,8 +8,6 @@ import ru.netology.data.DataHelper;
 import ru.netology.page.LoginPage;
 import ru.netology.page.PersonalAccountPage;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -18,23 +16,13 @@ public class LoginUserTest {
 
     @BeforeEach
     void setUp() {
-        open("http://localhost:9999");
+
+        open("http://localhost:9999 ");
     }
 
-    @AfterEach
-    void cleanUp() throws SQLException {
-        QueryRunner runner = new QueryRunner();
-        String cleanCardsTable = "DELETE FROM cards;";
-        String cleanAuth_CodesTable = "DELETE FROM auth_codes;";
-        String cleanUsersTable = "DELETE FROM users;";
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
-        );
-        ) {
-            runner.update(connection, cleanCardsTable);
-            runner.update(connection, cleanAuth_CodesTable);
-            runner.update(connection, cleanUsersTable);
-        }
+    @AfterAll
+    public void cleanUp() throws SQLException {
+       DataHelper.CleanTables();
     }
 
     @Test
@@ -54,6 +42,4 @@ public class LoginUserTest {
         loginPage.invalidLogin(invalidAuthInfo);
 
     }
-
-
 }
