@@ -13,6 +13,25 @@ public class DataHelper {
     public DataHelper() {}
 
     @Value
+    public static class CleaningTables {}
+
+    public static void CleanTables() throws SQLException {
+        QueryRunner runner = new QueryRunner();
+        String cleanCardsTable = "DELETE FROM cards;";
+        String cleanAuth_CodesTable = "DELETE FROM auth_codes;";
+        String cleanUsersTable = "DELETE FROM users;";
+        try (
+                Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/app-deadline", "user", "pass"
+        );
+        ) {
+            runner.update(connection, cleanCardsTable);
+            runner.update(connection, cleanAuth_CodesTable);
+            runner.update(connection, cleanUsersTable);
+        }
+    }
+
+    @Value
     public static class AuthInfo {
         private String login;
         private String password;
@@ -49,5 +68,4 @@ public class DataHelper {
         }
         return new VerificationCode(code);
     }
-
 }
