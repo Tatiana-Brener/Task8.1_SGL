@@ -20,7 +20,7 @@ public class LoginUserTest {
         open("http://localhost:9999 ");
     }
 
-    @AfterAll
+    @AfterEach
     public void cleanUp() throws SQLException {
        DataHelper.cleanTables();
     }
