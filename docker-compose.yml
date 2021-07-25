@@ -10,5 +10,6 @@ services:
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
       - MYSQL_DATABASE=app-deadline
+#      - MYSQL=localhost:3306/app-deadline
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pass
