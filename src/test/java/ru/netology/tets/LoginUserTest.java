@@ -1,6 +1,5 @@
 package ru.netology.tets;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,7 +7,6 @@ import ru.netology.data.DataHelper;
 import ru.netology.page.LoginPage;
 import ru.netology.page.PersonalAccountPage;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -16,8 +14,7 @@ import static com.codeborne.selenide.Selenide.open;
 public class LoginUserTest {
 
     @BeforeEach
-    void setUp() throws SQLException {
-        DataHelper.restartSUT();
+    void setUp()  {
         open("http://localhost:9999 ");
     }
 
